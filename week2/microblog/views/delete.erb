@@ -1,10 +1,10 @@
-<% if post %>
-  <p>Are you sure you want to delete the following post: <em>"<%= post.to_s %>"</em>?</p>
+<% if post.empty? %>
+  <p>No post with such id.</p>
+<% else %>
+  <p>Are you sure you want to delete the following post: <em>"<%= post[0][0] %>"</em>?</p>
   <form action="/<%= id %>" method="post">
     <input type="hidden" name="_method" value="delete">
     <input type="submit" value="Yes, Delete It!">
     <a href="/<%= id %>">Cancel</a>
   </form>
-<% else %>
-  <p>No post with such id.</p>
 <% end %>

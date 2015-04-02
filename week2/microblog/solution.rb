@@ -1,16 +1,14 @@
 require 'sinatra/base'
+require './setup.rb'
 
 class Miniblog < Sinatra::Base
   use Rack::MethodOverride
 
-  POSTS = ["BLALALAAHAHHHA"]
-
   get '/' do
-    if POSTS.empty?
-      'No posts'
-    else
-      erb :root, locals: {posts: POSTS} 
-    end
+    posts = DB.execute "select * from posts"
+    tags = DB.execute "select * from tags"
+    pt = DB.execute "select * from posts_to_tags"
+    erb :root, locals: {posts: posts, tags: tags, pt: pt}
   end
 
   get '/new' do
@@ -18,30 +16,49 @@ class Miniblog < Sinatra::Base
   end
 
   post '/new' do
-    POSTS << params[:description]
+    post = params[:description]
+    DB.execute "insert into posts(body) values('#{post}')"
+    post_id = DB.execute "select last_insert_rowid()"
+    tags = post.scan(/(?<=\B#)\S+/)
+    tags.each do |tag|
+      existing_tag = DB.execute "select * from tags where body = '#{tag}'"
+      if existing_tag.empty?
+        DB.execute "insert into tags(body) values('#{tag}')"
+        tag_id = DB.execute "select last_insert_rowid()"
+        DB.execute "insert into posts_to_tags(post_id, tag_id) values('#{post_id[0][0]}', '#{tag_id[0][0]}')"
+      else
+        DB.execute "insert into posts_to_tags(post_id, tag_id) values('#{post_id[0][0]}', '#{existing_tag[0][0]}')"
+      end
+    end
     erb :new
   end
 
   get '/:id' do |id|
-    if id.to_i > 0
-      erb :id, locals: {post: POSTS[id.to_i-1]}
-    else
-      'No post with such id.'
-    end
+    post = DB.execute "select body from posts where id = '#{id.to_i}'"
+    erb :id, locals: {post: post}
   end
 
   get '/:id/delete' do |id|
-    post = id.to_i > 0 ? POSTS[id.to_i-1] : nil
-    erb :delete, locals: {post: post, id: id}
+    post = DB.execute "select body from posts where id = '#{id.to_i}'"
+    erb :delete, locals: {post: post, id: id.to_i}
   end
 
   delete '/:id' do |id|
-    if id.to_i > 0 and not POSTS[id.to_i-1].nil?
-      POSTS[id.to_i-1] = nil
-      redirect '/'
-    else
+    post = DB.execute "select * from posts where id = '#{id.to_i}'"
+    if post.empty?
       'No post with such id.'
-    end   
+    else
+      posts_to_tags = DB.execute "select * from posts_to_tags where post_id = '#{id.to_i}'"
+      posts_to_tags.each do |pair|
+        posts_with_tag = DB.execute "select * from posts_to_tags where tag_id = '#{pair[1]}'"
+        if posts_with_tag.count == 1
+          DB.execute "delete from tags where id = '#{pair[1]}'"
+        end
+        DB.execute "delete from posts_to_tags where post_id = '#{pair[0]}' and tag_id = '#{pair[1]}'"
+      end
+      DB.execute "delete from posts where id = '#{id.to_i}'"
+      redirect '/'
+    end 
   end
 
   run! if app_file == $0

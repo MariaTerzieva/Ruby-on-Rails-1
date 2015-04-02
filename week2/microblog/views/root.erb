@@ -1,8 +1,31 @@
 <!DOCTYPE html>
 <html>
 	<body>
-		<% posts.each do |post| %>
-		<p><%= post.to_s %></p>
+		<% if posts.empty? %>
+			<p>No posts to show.</p>
+		<% else %>
+			<p><strong>Posts:</strong></p>
+			<% posts.each do |post| %>
+				<p><%= post[0] %>. <%= post[1] %></p>
+			<% end %>
+		<% end %>
+
+		<% if tags.empty? %>
+			<p>No tags to show.</p>
+		<% else %>
+			<p><strong>Tags:</strong></p>
+			<% tags.each do |tag| %>
+				<p><%= tag[0] %>. <%= tag[1] %></p>
+			<% end %>
+		<% end %>
+
+		<% if pt.empty? %>
+			<p>No pt to show.</p>
+		<% else %>
+			<p><strong>PT:</strong></p>
+			<% pt.each do |pt| %>
+				<p><%= pt[0] %>-> <%= pt[1] %></p>
+			<% end %>
 		<% end %>
 	</body>
 </html>

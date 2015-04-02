@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 	<body>
-		<% if post.nil? %>
-		<p><%= "No post with such id." %></p>
+		<% if post.empty? %>
+		<p>No post with such id.</p>
 		<% else %>
-		<p><%= post.to_s %></p>
+		<p><%= post[0][0] %></p>
 		<% end %>
 	</body>
 </html>

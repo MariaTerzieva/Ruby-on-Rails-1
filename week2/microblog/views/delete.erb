@@ -1,10 +1,21 @@
-<% if post.empty? %>
-  <p>No post with such id.</p>
-<% else %>
-  <p>Are you sure you want to delete the following post: <em>"<%= post[0][0] %>"</em>?</p>
-  <form action="/<%= id %>" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="Yes, Delete It!">
-    <a href="/<%= id %>">Cancel</a>
-  </form>
-<% end %>
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/css/bootstrap.css">
+		<link rel="stylesheet" href="/css/bootstrap-responsive.css">
+	</head>
+	<body>
+		<div class="text-center">
+			<% if post.empty? %>
+				<p>No post with such id.</p>
+			<% else %>
+				<p>Are you sure you want to delete the following post: <em>"<%= post[0][0] %>"</em>?</p>
+				<form action="/<%= id %>" method="post">
+					<input type="hidden" name="_method" value="delete">
+					<input type="submit" value="Yes, Delete It!">
+					<a href="/<%= id %>">Cancel</a>
+				</form>
+			<% end %>
+		</div>
+	</body>
+</html>

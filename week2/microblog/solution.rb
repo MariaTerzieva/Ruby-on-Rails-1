@@ -6,9 +6,7 @@ class Miniblog < Sinatra::Base
 
   get '/' do
     posts = DB.execute "select * from posts"
-    tags = DB.execute "select * from tags"
-    pt = DB.execute "select * from posts_to_tags"
-    erb :root, locals: {posts: posts, tags: tags, pt: pt}
+    erb :root, locals: {posts: posts}
   end
 
   get '/new' do
@@ -42,7 +40,7 @@ class Miniblog < Sinatra::Base
     erb :id, locals: {post: post}
   end
 
-  get '/:id/delete' do |id|
+  get '/delete/:id' do |id|
     post = DB.execute "select body from posts where id = '#{id.to_i}'"
     erb :delete, locals: {post: post, id: id.to_i}
   end
@@ -50,7 +48,7 @@ class Miniblog < Sinatra::Base
   delete '/:id' do |id|
     post = DB.execute "select * from posts where id = '#{id.to_i}'"
     if post.empty?
-      'No post with such id.'
+      erb :not_found, locals: {resource: "id"}
     else
       posts_to_tags = DB.execute "select * from posts_to_tags where post_id = '#{id.to_i}'"
       posts_to_tags.each do |pair|
@@ -68,12 +66,12 @@ class Miniblog < Sinatra::Base
   get '/search/:tag' do |tag|
     tag_id = DB.execute "select id from tags where body = '#{tag}'"
     if tag_id.empty?
-      'No post with such tag.'
+      erb :not_found, locals: {resource: "tag"}
     else
       post_ids = DB.execute "select post_id from posts_to_tags where tag_id = '#{tag_id[0][0]}'"
       posts = []
       post_ids.flatten.each do |post_id|
-        posts << DB.execute("select body from posts where id = '#{post_id}'")[0][0]
+        posts << DB.execute("select * from posts where id = '#{post_id}'").flatten
       end
       erb :search, locals: {posts: posts}
     end

@@ -1,3 +1,14 @@
-<% posts.each do |post| %>
-	<p><%= post%></p>
-<% end %>
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/css/bootstrap.css">
+		<link rel="stylesheet" href="/css/bootstrap-responsive.css">
+	</head>
+	<body>
+		<div class="text-center">
+			<% posts.each do |post| %>
+				<p><%= post[0] %>. <%= post[1] %></p>
+			<% end %>
+		</div>
+	</body>
+</html>

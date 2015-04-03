@@ -6,11 +6,7 @@
 	</head>
 	<body>
 		<div class="text-center">
-			<% if post.empty? %>
-				<p>No post with such id.</p>
-			<% else %>
-				<p><%= post[0][0] %></p>
-			<% end %>
+			<p>No post with such <%= resource %>.</p>
 		</div>
 	</body>
 </html>

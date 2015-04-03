@@ -17,20 +17,24 @@ class Miniblog < Sinatra::Base
 
   post '/new' do
     post = params[:description]
-    DB.execute "insert into posts(body) values('#{post}')"
-    post_id = DB.execute "select last_insert_rowid()"
-    tags = post.scan(/(?<=\B#)\S+/)
-    tags.each do |tag|
-      existing_tag = DB.execute "select * from tags where body = '#{tag}'"
-      if existing_tag.empty?
-        DB.execute "insert into tags(body) values('#{tag}')"
-        tag_id = DB.execute "select last_insert_rowid()"
-        DB.execute "insert into posts_to_tags(post_id, tag_id) values('#{post_id[0][0]}', '#{tag_id[0][0]}')"
-      else
-        DB.execute "insert into posts_to_tags(post_id, tag_id) values('#{post_id[0][0]}', '#{existing_tag[0][0]}')"
+    if post.length > 256
+      erb :error
+    else 
+      DB.execute "insert into posts(body) values('#{post}')"
+      post_id = DB.execute "select last_insert_rowid()"
+      tags = post.scan(/(?<=\B#)\S+/)
+      tags.each do |tag|
+        existing_tag = DB.execute "select * from tags where body = '#{tag}'"
+        if existing_tag.empty?
+          DB.execute "insert into tags(body) values('#{tag}')"
+          tag_id = DB.execute "select last_insert_rowid()"
+          DB.execute "insert into posts_to_tags(post_id, tag_id) values('#{post_id[0][0]}', '#{tag_id[0][0]}')"
+        else
+          DB.execute "insert into posts_to_tags(post_id, tag_id) values('#{post_id[0][0]}', '#{existing_tag[0][0]}')"
+        end
       end
+      erb :new
     end
-    erb :new
   end
 
   get '/:id' do |id|
@@ -59,6 +63,20 @@ class Miniblog < Sinatra::Base
       DB.execute "delete from posts where id = '#{id.to_i}'"
       redirect '/'
     end 
+  end
+
+  get '/search/:tag' do |tag|
+    tag_id = DB.execute "select id from tags where body = '#{tag}'"
+    if tag_id.empty?
+      'No post with such tag.'
+    else
+      post_ids = DB.execute "select post_id from posts_to_tags where tag_id = '#{tag_id[0][0]}'"
+      posts = []
+      post_ids.flatten.each do |post_id|
+        posts << DB.execute("select body from posts where id = '#{post_id}'")[0][0]
+      end
+      erb :search, locals: {posts: posts}
+    end
   end
 
   run! if app_file == $0

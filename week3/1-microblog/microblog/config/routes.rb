@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resources :maps
-  resources :tags
   resources :posts
   root 'posts#index'
   # The priority is based upon order of creation: first created -> highest priority.

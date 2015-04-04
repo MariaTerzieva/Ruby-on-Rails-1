@@ -25,6 +25,10 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
+    tags = @post.body.scan(/(?<=\B#)\S+/)
+    tags.each do |body|
+      @post.tags << Tag.new(body: body)
+    end
 
     respond_to do |format|
       if @post.save

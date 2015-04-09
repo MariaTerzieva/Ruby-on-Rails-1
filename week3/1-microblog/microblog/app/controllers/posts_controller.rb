@@ -46,6 +46,11 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
+        Tag.destroy_all(post_id: @post.id)
+        tags = @post.body.scan(/(?<=\B#)\S+/)
+        tags.each do |body|
+          @post.tags << Tag.new(body: body)
+        end
         format.html { redirect_to @post, notice: 'Post was successfully updated.' }
         format.json { render :show, status: :ok, location: @post }
       else
@@ -68,7 +73,11 @@ class PostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.find(params[:id])
+      begin
+        @post = Post.find(params[:id])
+      rescue => ex
+        @post = nil
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

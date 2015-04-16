@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <% if @photo %>
+    <%= image_tag @photo.url, alt: @photo.title %><br>
+    <strong>Title:</strong>
+    <%= @photo.title %><br>
+    <%= link_to 'Back', photos_path %>
+  <% else %>
+    There is no photo with such id.
+    <%= link_to 'Back', photos_path %>
+  <% end %>
+</p>

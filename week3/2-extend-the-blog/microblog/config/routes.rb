@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :posts
+  resources :photos
   root 'posts#index'
 
   get 'search/:tag' => 'posts#search'

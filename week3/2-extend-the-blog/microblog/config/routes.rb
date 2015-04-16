@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :posts
   resources :photos
-  root 'posts#index'
+  root 'photos#index'
 
   get 'search/:tag' => 'posts#search'
   # The priority is based upon order of creation: first created -> highest priority.

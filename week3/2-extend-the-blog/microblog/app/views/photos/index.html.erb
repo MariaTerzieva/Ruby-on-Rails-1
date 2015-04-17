@@ -3,23 +3,18 @@
 <h1>Listing Photos</h1>
 
 <table>
-<!--   <thead>
+  <% @photos.each_slice(6) do |photos| %>
     <tr>
-      <th>Body</th>
-      <th colspan="3"></th>
+      <% photos.each do |photo| %>
+        <td>
+          <%= image_tag photo.url , size: "200x200", alt: photo.title%><br>
+          <strong><%= photo.title %></strong><br>
+          <%= link_to 'Show', photo %><br>
+          <%= link_to 'Destroy', photo, method: :delete, data: { confirm: 'Are you sure?' } %><br>
+        </td>
+      <% end %>
     </tr>
-  </thead> -->
-
-  <tbody>
-    <% @photos.each do |photo| %>
-      <tr>
-        <%= image_tag photo.url , size: "200x200", alt: photo.title%><br>
-        <strong><%= photo.title %></strong><br>
-        <%= link_to 'Show', photo %><br>
-        <%= link_to 'Destroy', photo, method: :delete, data: { confirm: 'Are you sure?' } %><br>
-      </tr>
-    <% end %>
-  </tbody>
+  <% end %>
 </table>
 
 <br>

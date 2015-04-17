@@ -3,12 +3,14 @@
 <h1>Listing Photos</h1>
 
 <table>
-  <% @photos.each_slice(6) do |photos| %>
+  <% @photos.each_slice(5) do |photos| %>
     <tr>
       <% photos.each do |photo| %>
         <td>
           <%= image_tag photo.url , size: "200x200", alt: photo.title%><br>
           <strong><%= photo.title %></strong><br>
+          <strong>created: </strong>
+          <%= photo.created_at.strftime("%d.%m.%Y") %><br>
           <%= link_to 'Show', photo %><br>
           <%= link_to 'Destroy', photo, method: :delete, data: { confirm: 'Are you sure?' } %><br>
         </td>

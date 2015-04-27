@@ -1,15 +1,19 @@
 Rails.application.routes.draw do
-  resources :products
-  resources :brands
-  resources :categories
-
   get 'products/count', to: 'products#count'
   get 'brands/count', to: 'brands#count'
   get 'categories/count', to: 'categories#count'
 
-  get 'products/range/:from/:count', to: 'products#range'
-  get 'brands/range/:from/:count', to: 'brands#range'
-  get 'categories/range/:from/:count', to: 'categories#range'
+  get 'products/range/:from(/:count)', to: 'products#range'
+  get 'brands/range/:from(/:count)', to: 'brands#range'
+  get 'categories/range/:from(/:count)', to: 'categories#range'
+
+  post 'categories/new', to: 'categories#create'
+  post 'products/new', to: 'products#create'
+  post 'brands/new', to: 'brands#create'
+
+  resources :products
+  resources :brands
+  resources :categories
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

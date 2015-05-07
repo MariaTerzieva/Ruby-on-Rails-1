@@ -21,7 +21,7 @@ class LecturesController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     @lecture = Lecture.find_by(id: params[:id])
     @lecture.destroy
     redirect_to lectures_url

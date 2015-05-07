@@ -1,0 +1,13 @@
+<p>
+  <% if @lecture %>
+  	<strong>Name:</strong>
+  	<%= @lecture.name %>
+    <strong>Text Body:</strong>
+    <%= @lecture.text_body %>
+    <%= link_to 'Edit', edit_lecture_path(@lecture) %> |
+    <%= link_to 'Back', lectures_path %>
+  <% else %>
+    There is no lecture with such id.
+    <%= link_to 'Back', lectures_path %>
+  <% end %>
+</p>

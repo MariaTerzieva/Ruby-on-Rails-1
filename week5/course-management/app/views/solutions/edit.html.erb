@@ -1,0 +1,30 @@
+<h1>Editing Solution</h1>
+
+<%= form_for(@solution, url: lecture_task_solution_path(@solution.task.lecture, @solution.task, @solution)) do |f| %>
+  <% if @solution.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@solution.errors.count, "error") %> prohibited this solution from being saved:</h2>
+
+      <ul>
+      <% @solution.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :code %><br>
+    <%= f.text_field :code %>
+  </div>
+  <div>
+    <%= f.label :task_id %><br>
+    <%= f.number_field :task_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', lecture_task_solution_path(@solution.task.lecture, @solution.task, @solution) %> |
+<%= link_to 'Back', lecture_task_solutions_path(@solution.task.lecture, @solution.task) %>

@@ -1,0 +1,34 @@
+<h1>Editing Task</h1>
+
+<%= form_for(@task, url: lecture_task_path(@task.lecture, @task)) do |f| %>
+  <% if @task.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+      <ul>
+      <% @task.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_field :description %>
+  </div>
+  <div>
+    <%= f.label :lecture_id %><br>
+    <%= f.number_field :lecture_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', lecture_task_path(@task.lecture, @task) %> |
+<%= link_to 'Back', lecture_tasks_path %>

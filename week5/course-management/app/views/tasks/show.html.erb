@@ -1,0 +1,13 @@
+<p>
+  <% if @task %>
+  	<strong>Name:</strong>
+  	<%= @task.name %>
+    <strong>Description:</strong>
+    <%= @task.description %>
+    <%= link_to 'Edit', edit_lecture_task_path(@task.lecture, @task) %> |
+    <%= link_to 'Back', lecture_tasks_path(@task.lecture) %>
+  <% else %>
+    There is no task with such id.
+    <%= link_to 'Back', lecture_tasks_path(@task.lecture) %>
+  <% end %>
+</p>

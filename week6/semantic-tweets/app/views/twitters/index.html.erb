@@ -1,0 +1,17 @@
+<h1>Listing Tweets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tweet</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tweets.each do |tweet| %>
+      <tr>
+        <td><%= tweet['text'] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

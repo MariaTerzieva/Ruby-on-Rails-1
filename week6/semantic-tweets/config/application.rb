@@ -22,9 +22,11 @@ module SemanticTweets
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
-    config.twitter_token = "3233708379-rwLC41307Lw6eiLyzduLpSONbtnOn01ejqlTtVu"
-    config.twitter_token_secret = "4HlNXHXcuxKA03FGEy0uWbRr2EQH38rAcTllwzRLAL1KT"
-    config.api_key = "IlMQjLkxdEJdfCSKXTYZxxLGA"
-    config.api_secret = "6F5N7TYScVrLOprHMaBm7dRSyTYW3GuDI4r021fCe9smurtdgN"
+    config.twitter_token = ""
+    config.twitter_token_secret = ""
+    config.api_key = ""
+    config.api_secret = ""
+    config.semantria_key = ""
+    config.semantria_secret = ""
   end
 end

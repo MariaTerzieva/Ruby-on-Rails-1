@@ -1,0 +1,34 @@
+<h1>Listing Tweets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tweet</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tweets.each do |tweet| %>
+      <tr>
+        <td><%= tweet['text'] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Positive Only</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @positive_tweets.each do |tweet| %>
+      <tr>
+        <td><%= tweet['source_text'] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
